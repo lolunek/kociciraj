@@ -1,82 +1,482 @@
-﻿<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="cs">
 <head>
-    <title>Email Link</title>
-    <style>
-        body {
-            background: linear-gradient(to right, #a8e6cf, #dcedc1);
-            font-family: 'Arial', sans-serif;
-            color: #333;
-            padding: 20px;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Kontakt • E-mail</title>
 
-        h1 {
-            font-size: 30px;
-            text-align: center;
-            color: black;
-            
-        }
+  <style>
+    :root{
+      --bg-950:#05070d;
+      --bg-900:#0b0f1a;
+      --bg-850:#0f172a;
+      --card: rgba(255,255,255,.06);
+      --text:#f8fafc;
+      --muted:#a6b0bf;
 
-        section {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin: 20px 0;
-            text-align:center;
-        }
+      --accent:#fbbf24;
+      --accent2:#f97316;
 
-        h2 {
-            color: #ffcc5c;
-            font-size: 32px;
-        }
+      --b: 1px solid rgba(255,255,255,.10);
+      --b2: 1px solid rgba(255,255,255,.14);
+      --shadow: 0 30px 90px rgba(0,0,0,.50);
 
-        p {
-            font-size: 30px;
-            line-height: 1.6;
-            font-family: Century;
-        }
+      --r-sm: 14px;
+      --r-md: 22px;
+      --r-lg: 32px;
+      --ease: cubic-bezier(.22,.61,.36,1);
 
-        a.button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ff6f69;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
-        }
+      --container: 980px;
+    }
 
-            a.button:hover {
-                background-color: #ffcc5c;
-            }
-    </style>
+    [data-theme="light"]{
+      --bg-950:#ffffff;
+      --bg-900:#f7f7fb;
+      --bg-850:#ffffff;
+      --card: rgba(0,0,0,.05);
+      --text:#0f172a;
+      --muted:#475569;
+
+      --b: 1px solid rgba(0,0,0,.10);
+      --b2: 1px solid rgba(0,0,0,.14);
+      --shadow: 0 30px 90px rgba(0,0,0,.18);
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text);
+      background:
+        radial-gradient(900px 450px at 20% 0%, rgba(251,191,36,.18), transparent 60%),
+        radial-gradient(900px 450px at 80% 10%, rgba(249,115,22,.16), transparent 60%),
+        radial-gradient(900px 500px at 60% 90%, rgba(59,130,246,.14), transparent 65%),
+        linear-gradient(180deg, var(--bg-950), var(--bg-900) 55%, var(--bg-850));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button,input{ font:inherit; color:inherit; }
+
+    .container{
+      width: min(var(--container), calc(100% - 48px));
+      margin-inline:auto;
+    }
+
+    /* Topbar */
+    .topbar{
+      position: sticky;
+      top:0;
+      z-index: 1000;
+      background: rgba(5,7,13,.62);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--b);
+    }
+    [data-theme="light"] .topbar{
+      background: rgba(255,255,255,.70);
+    }
+
+    .topbar-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 0;
+      gap: 12px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: var(--b);
+      background: rgba(255,255,255,.06);
+      box-shadow: 0 10px 25px rgba(0,0,0,.18);
+      color: var(--muted);
+      user-select:none;
+      font-size: 14px;
+    }
+    [data-theme="light"] .pill{ background: rgba(0,0,0,.04); }
+
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(251,191,36,.14);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: var(--b);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      transition: transform .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease);
+      box-shadow: 0 10px 25px rgba(0,0,0,.18);
+      font-weight: 700;
+      white-space:nowrap;
+    }
+    [data-theme="light"] .btn{ background: rgba(0,0,0,.04); }
+
+    .btn:hover{ transform: translateY(-2px); border-color: rgba(251,191,36,.35); }
+    .btn:active{ transform: translateY(0); }
+    .btn:focus{ outline:none; box-shadow: 0 10px 25px rgba(0,0,0,.18), 0 0 0 4px rgba(251,191,36,.18); }
+
+    .btn-primary{
+      background: linear-gradient(135deg, rgba(251,191,36,.95), rgba(249,115,22,.95));
+      color:#121826;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .btn-primary:hover{
+      background: linear-gradient(135deg, rgba(251,191,36,1), rgba(249,115,22,1));
+    }
+
+    .btn-icon{
+      width:44px;height:44px;
+      padding:0;
+    }
+
+    .i{ width:18px;height:18px; display:inline-block; }
+    .i svg{ width:100%;height:100%; display:block; }
+
+    /* Page */
+    main{
+      padding: 70px 0 90px;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: start;
+      margin-top: 28px;
+    }
+    @media (max-width: 880px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border-radius: var(--r-lg);
+      border: var(--b2);
+      background:
+        radial-gradient(900px 320px at 20% 0%, rgba(251,191,36,.16), transparent 60%),
+        radial-gradient(900px 320px at 90% 20%, rgba(59,130,246,.12), transparent 65%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card h1{
+      margin:0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: -0.6px;
+      line-height:1.05;
+    }
+    .card p{
+      margin:0 0 16px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height:1.6;
+    }
+
+    .email-box{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: var(--b);
+      background: rgba(255,255,255,.06);
+      margin: 18px 0;
+    }
+    [data-theme="light"] .email-box{ background: rgba(0,0,0,.04); }
+
+    .email{
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: .2px;
+      word-break: break-word;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .mini{
+      border-radius: var(--r-lg);
+      border: var(--b);
+      background: rgba(255,255,255,.06);
+      padding: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+    }
+    [data-theme="light"] .mini{ background: rgba(0,0,0,.04); }
+
+    .mini strong{
+      display:block;
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .mini span{
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Toast */
+    .toasts{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 3000;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      pointer-events:none;
+    }
+    .toast{
+      pointer-events:auto;
+      width: min(420px, calc(100vw - 28px));
+      border-radius: var(--r-lg);
+      border: var(--b2);
+      background: rgba(15,23,42,.94);
+      box-shadow: var(--shadow);
+      padding: 12px 12px 12px 14px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      animation: toastIn .35s var(--ease) both;
+    }
+    [data-theme="light"] .toast{ background: rgba(255,255,255,.94); }
+    @keyframes toastIn{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+    .toast strong{ display:block; margin-bottom:2px; }
+    .toast p{ margin:0; color: var(--muted); font-size: 14px; }
+    .toast .x{
+      width: 36px; height: 36px;
+      border-radius: 999px;
+      border: var(--b);
+      background: rgba(255,255,255,.06);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      flex: 0 0 auto;
+    }
+    [data-theme="light"] .toast .x{ background: rgba(0,0,0,.04); }
+  </style>
 </head>
-<body>
-    <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/695d046bb1e0d21980f0d10e/1je9lihhl';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
-    
-    <section>
-        <h1>E-mail</h1>
-        <h1>rajkocici@gmail.com</h1>
-        <a href="mailto:rajkocici@gmail.com" class="button">Odeslat e-mail</a>
-        
-    </section>
 
-    <a href="index.html" class="button">Zpět</a>
+<body data-theme="dark">
 
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/695d046bb1e0d21980f0d10e/1je9lihhl';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!--End of Tawk.to Script-->
+
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-inner">
+        <div class="brand">
+          <span class="i" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.5 7-10a7 7 0 1 0-14 0c0 5.5 7 10 7 10Z" stroke="currentColor" stroke-width="2"/></svg>
+          </span>
+          <span>E-mail kontakt</span>
+          <span class="pill"><span class="dot"></span><span>rychlá odpověď</span></span>
+        </div>
+
+        <div class="row" style="display:flex;gap:10px;align-items:center;">
+          <button class="btn btn-icon" id="themeBtn" type="button" aria-label="Přepnout téma">
+            <span class="i" aria-hidden="true" id="themeIcon"></span>
+          </button>
+          <a class="btn" href="index.html">
+            <span class="i" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+            Zpět
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="hero">
+        <section class="card">
+          <h1>E-mail</h1>
+          <p>
+            Tady je kontakt. Můžeš rovnou kliknout na tlačítko a otevře se tvůj e-mail klient.
+            Nebo si to zkopíruj jedním klikem. Ano, je to fakt tak jednoduchý.
+          </p>
+
+          <div class="email-box" role="group" aria-label="E-mail adresa">
+            <div>
+              <div class="email" id="email">rajkocici@gmail.com</div>
+              <div class="hint">Klikni na „Kopírovat“, když nechceš otevírat mail aplikaci.</div>
+            </div>
+            <button class="btn btn-icon" id="copyBtn" type="button" aria-label="Kopírovat e-mail">
+              <span class="i" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h10v10H9V9Z" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="actions">
+            <a class="btn btn-primary" id="mailtoBtn" href="mailto:rajkocici@gmail.com">
+              <span class="i" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5Z" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+              Odeslat e-mail
+            </a>
+
+            <button class="btn" id="toastBtn" type="button">
+              <span class="i" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 22a8 8 0 1 0-8-8" stroke="currentColor" stroke-width="2"/><path d="M12 14v-4M12 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              Jak to funguje
+            </button>
+          </div>
+        </section>
+
+        <aside class="side">
+          <div class="mini">
+            <strong>Rychlé tipy</strong>
+            <span>Většinou odpovídáme co nejdřív. Když spíš, odpovíme později. Dramatický.</span>
+          </div>
+
+          <div class="mini">
+            <strong>Bezpečnější mailto</strong>
+            <span>Odkaz je nastavený přímo na tvoji adresu. Nic složitýho, jen to vypadá profi.</span>
+          </div>
+
+          <div class="mini">
+            <strong>Theme toggle</strong>
+            <span>Dark/light podle nálady. Ano, i kontakty můžou mít swag.</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    const $ = (s, r=document) => r.querySelector(s);
+
+    // Toast
+    function toast(title, msg){
+      const wrap = $("#toasts");
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.innerHTML = `
+        <div>
+          <strong>${title}</strong>
+          <p>${msg}</p>
+        </div>
+        <button class="x" type="button" aria-label="Zavřít">
+          <span class="i" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+      `;
+      wrap.appendChild(el);
+
+      const kill = () => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(10px)";
+        setTimeout(() => el.remove(), 220);
+      };
+      el.querySelector(".x").addEventListener("click", kill);
+      setTimeout(kill, 4200);
+    }
+
+    // Theme
+    const themeBtn = $("#themeBtn");
+    const themeIcon = $("#themeIcon");
+
+    function iconSun(){
+      return `<svg viewBox="0 0 24 24" fill="none">
+        <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M5 19l1.5-1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>`;
+    }
+    function iconMoon(){
+      return `<svg viewBox="0 0 24 24" fill="none">
+        <path d="M21 13.5A8.5 8.5 0 0 1 10.5 3 7.5 7.5 0 1 0 21 13.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>`;
+    }
+
+    function setTheme(t){
+      document.body.setAttribute("data-theme", t);
+      localStorage.setItem("theme", t);
+      themeIcon.innerHTML = (t === "light") ? iconMoon() : iconSun();
+    }
+    const saved = localStorage.getItem("theme");
+    setTheme(saved === "light" ? "light" : "dark");
+
+    themeBtn.addEventListener("click", () => {
+      const cur = document.body.getAttribute("data-theme");
+      setTheme(cur === "dark" ? "light" : "dark");
+      toast("Téma", `Aktivní: ${document.body.getAttribute("data-theme")}`);
+    });
+
+    // Copy email
+    const email = $("#email").textContent.trim();
+    $("#copyBtn").addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(email);
+        toast("Zkopírováno", email);
+      }catch{
+        toast("Nešlo to", "Prohlížeč blokuje kopírování. Zkopíruj ručně.");
+      }
+    });
+
+    // Explain
+    $("#toastBtn").addEventListener("click", () => {
+      toast("Mailto", "Klikneš na 'Odeslat e-mail' a otevře se tvůj e-mail klient. Kopírování je jen bonus.");
+    });
+  </script>
 </body>
 </html>
-
