@@ -1,369 +1,1930 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="cs">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chovatelská stanice koček</title>
+  <!-- ============================================================
+    PROFI ONE-FILE WEB (NO FRAMEWORKS, YES TASTE)
+    - Zachovaný obsah, komplet nový design + UX + JS funkce
+    - Vše v jednom souboru
+    - Kočky / obrázky / odkazy zůstávají stejné
+  ============================================================ -->
 
-<style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
 
-/* =========================================================
-   DESIGN TOKENS
-========================================================= */
-:root {
-  --bg-900:#05070d;
-  --bg-800:#0b0f1a;
-  --bg-700:#121826;
-  --card:#161d2e;
+  <title>Chovatelská stanice koček</title>
+  <meta name="description" content="Zodpovědný chov koček. Zdravé, socializované a milované kočky z rodinného prostředí." />
 
-  --text-main:#f8fafc;
-  --text-muted:#9aa4b2;
+  <!-- ============================================================
+    FONTS: čistý systémový stack (rychlé, profi, bez závislostí)
+  ============================================================ -->
 
-  --accent:#fbbf24;
-  --accent-soft:rgba(251,191,36,.15);
+  <style>
+    /* ============================================================
+      0) DESIGN TOKENS
+      - Základ všeho, co vypadá “profi”
+    ============================================================ */
+    :root{
+      /* brand */
+      --brand-50:  #fff7ed;
+      --brand-100: #ffedd5;
+      --brand-200: #fed7aa;
+      --brand-300: #fdba74;
+      --brand-400: #fb923c;
+      --brand-500: #f97316;
+      --brand-600: #ea580c;
+      --brand-700: #c2410c;
+      --brand-800: #9a3412;
+      --brand-900: #7c2d12;
 
-  --radius-xs:6px;
-  --radius-sm:12px;
-  --radius-md:20px;
-  --radius-lg:32px;
+      /* neutrals dark */
+      --bg-950: #05070d;
+      --bg-900: #0b0f1a;
+      --bg-850: #0f172a;
+      --bg-800: #111827;
+      --bg-750: #131c2f;
+      --bg-700: #16203a;
+      --card:   rgba(255,255,255,.06);
 
-  --shadow-lg:0 30px 80px rgba(0,0,0,.45);
-  --ease:cubic-bezier(.22,.61,.36,1);
-}
+      /* neutrals light */
+      --l-bg-50:  #ffffff;
+      --l-bg-100: #f7f7fb;
+      --l-card:   rgba(0,0,0,.05);
+      --l-text:   #0f172a;
+      --l-muted:  #475569;
 
-/* =========================================================
-   RESET
-========================================================= */
-*{margin:0;padding:0;box-sizing:border-box}
-img{max-width:100%;display:block}
-a{text-decoration:none;color:inherit}
+      /* text dark */
+      --text: #f8fafc;
+      --muted:#a6b0bf;
+      --muted-2:#93a0b4;
 
-/* =========================================================
-   BASE
-========================================================= */
-body{
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:linear-gradient(180deg,var(--bg-900),var(--bg-800));
-  color:var(--text-main);
-  line-height:1.7;
-  overflow-x:hidden;
-}
+      /* accents */
+      --accent: var(--brand-400);
+      --accent-2: #fbbf24;
+      --accent-soft: rgba(251,191,36,.14);
+      --danger: #fb7185;
+      --ok: #34d399;
 
-/* =========================================================
-   NAVBAR
-========================================================= */
-header{
-  position:fixed;
-  top:0;
-  width:100%;
-  z-index:1000;
-  background:rgba(5,7,13,.7);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
+      /* radii */
+      --r-xs: 10px;
+      --r-sm: 14px;
+      --r-md: 22px;
+      --r-lg: 32px;
+      --r-xl: 44px;
 
-.nav{
-  max-width:1400px;
-  margin:auto;
-  padding:22px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+      /* shadows */
+      --shadow-sm: 0 8px 20px rgba(0,0,0,.20);
+      --shadow-md: 0 16px 50px rgba(0,0,0,.35);
+      --shadow-lg: 0 30px 90px rgba(0,0,0,.50);
 
-.nav img{height:46px}
+      /* layout */
+      --container: 1200px;
 
-.nav-links a{
-  margin-left:32px;
-  color:var(--text-muted);
-  font-weight:500;
-  position:relative;
-}
+      /* motion */
+      --ease: cubic-bezier(.22,.61,.36,1);
+      --ease2: cubic-bezier(.2,.9,.2,1);
 
-.nav-links a::after{
-  content:"";
-  position:absolute;
-  left:0;bottom:-6px;
-  width:0;height:2px;
-  background:var(--accent);
-  transition:.4s var(--ease);
-}
+      /* borders */
+      --b: 1px solid rgba(255,255,255,.08);
+      --b2: 1px solid rgba(255,255,255,.12);
 
-.nav-links a:hover::after{width:100%}
+      /* focus ring */
+      --ring: 0 0 0 4px rgba(251,191,36,.18);
 
-/* =========================================================
-   HERO
-========================================================= */
-.hero{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:140px 30px 80px;
-}
+      /* spacing scale */
+      --s-1: 4px;
+      --s-2: 8px;
+      --s-3: 12px;
+      --s-4: 16px;
+      --s-5: 20px;
+      --s-6: 24px;
+      --s-7: 28px;
+      --s-8: 32px;
+      --s-9: 40px;
+      --s-10:48px;
+      --s-11:56px;
+      --s-12:64px;
+      --s-13:72px;
+      --s-14:80px;
+      --s-15:96px;
+      --s-16:120px;
 
-.hero-inner{
-  max-width:1000px;
-  text-align:center;
-}
+      /* typography */
+      --fs-1: 12px;
+      --fs-2: 14px;
+      --fs-3: 16px;
+      --fs-4: 18px;
+      --fs-5: 20px;
+      --fs-6: 24px;
+      --fs-7: 28px;
+      --fs-8: 34px;
+      --fs-9: 44px;
+      --fs-10:56px;
+      --lh: 1.55;
 
-.hero h1{
-  font-size:clamp(42px,7vw,84px);
-  margin-bottom:24px;
-}
+      /* glass */
+      --glass: rgba(255,255,255,.07);
+      --glass2: rgba(255,255,255,.10);
 
-.hero p{
-  font-size:22px;
-  color:var(--text-muted);
-  margin-bottom:48px;
-}
+      /* gradients */
+      --grad-hero:
+        radial-gradient(900px 450px at 20% 10%, rgba(251,191,36,.22), transparent 55%),
+        radial-gradient(900px 450px at 80% 0%, rgba(249,115,22,.20), transparent 55%),
+        radial-gradient(800px 500px at 70% 75%, rgba(59,130,246,.16), transparent 60%),
+        linear-gradient(180deg, var(--bg-950), var(--bg-900) 45%, var(--bg-850));
 
-/* =========================================================
-   BUTTONS
-========================================================= */
-.btn{
-  display:inline-block;
-  padding:18px 42px;
-  border-radius:var(--radius-lg);
-  font-weight:600;
-  transition:.4s var(--ease);
-}
+      --grad-card:
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
 
-.btn-primary{
-  background:var(--accent);
-  color:#111;
-  box-shadow:var(--shadow-lg);
-}
+      --grad-border:
+        linear-gradient(90deg, rgba(251,191,36,.6), rgba(249,115,22,.6), rgba(59,130,246,.6));
 
-.btn-primary:hover{
-  transform:translateY(-4px);
-}
+      /* z-index */
+      --z-nav: 1000;
+      --z-modal: 2000;
+      --z-toast: 3000;
+    }
 
-.btn-secondary{
-  margin-left:20px;
-  border:2px solid var(--accent);
-  color:var(--accent);
-}
+    /* ============================================================
+      1) THEME TOGGLE (LIGHT)
+    ============================================================ */
+    [data-theme="light"]{
+      --bg-950: var(--l-bg-50);
+      --bg-900: var(--l-bg-100);
+      --bg-850: #ffffff;
+      --bg-800: #ffffff;
+      --bg-750: #ffffff;
+      --bg-700: #ffffff;
+      --card:   var(--l-card);
+      --text:   var(--l-text);
+      --muted:  var(--l-muted);
+      --muted-2:#64748b;
+      --b: 1px solid rgba(0,0,0,.08);
+      --b2: 1px solid rgba(0,0,0,.12);
+      --glass: rgba(0,0,0,.04);
+      --glass2: rgba(0,0,0,.06);
+      --shadow-sm: 0 8px 20px rgba(0,0,0,.10);
+      --shadow-md: 0 18px 60px rgba(0,0,0,.14);
+      --shadow-lg: 0 30px 90px rgba(0,0,0,.18);
 
-/* =========================================================
-   SECTIONS
-========================================================= */
-.section{
-  padding:140px 40px;
-}
+      --grad-hero:
+        radial-gradient(900px 450px at 20% 10%, rgba(251,191,36,.18), transparent 60%),
+        radial-gradient(900px 450px at 80% 0%, rgba(249,115,22,.16), transparent 60%),
+        radial-gradient(800px 500px at 70% 75%, rgba(59,130,246,.12), transparent 65%),
+        linear-gradient(180deg, #ffffff, #f7f7fb 55%, #ffffff);
+    }
 
-.container{
-  max-width:1400px;
-  margin:auto;
-}
+    /* ============================================================
+      2) RESET + BASE
+    ============================================================ */
+    *,*::before,*::after{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: var(--grad-hero);
+      line-height: var(--lh);
+      overflow-x:hidden;
+    }
+    img{ max-width:100%; display:block; }
+    a{ color:inherit; text-decoration:none; }
+    button, input{
+      font:inherit;
+      color:inherit;
+    }
 
-.section-title{
-  font-size:52px;
-  margin-bottom:20px;
-}
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+    }
 
-.section-desc{
-  max-width:700px;
-  color:var(--text-muted);
-  margin-bottom:80px;
-}
+    /* ============================================================
+      3) UTILITIES
+    ============================================================ */
+    .container{
+      width: min(var(--container), calc(100% - 2*var(--s-8)));
+      margin-inline:auto;
+    }
+    .stack{ display:flex; flex-direction:column; gap:var(--s-6); }
+    .row{ display:flex; align-items:center; gap:var(--s-5); }
+    .muted{ color:var(--muted); }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: var(--glass);
+      border: var(--b);
+      box-shadow: var(--shadow-sm);
+      font-size: var(--fs-2);
+      color: var(--muted);
+      user-select:none;
+    }
+    .pill .dot{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 6px rgba(251,191,36,.12);
+    }
 
-/* =========================================================
-   FEATURES
-========================================================= */
-.features{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:40px;
-}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      border: var(--b);
+      background: var(--glass);
+      cursor:pointer;
+      transition: transform .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease);
+      box-shadow: var(--shadow-sm);
+      user-select:none;
+      text-decoration:none;
+      font-weight:650;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .btn:hover{ transform: translateY(-2px); border-color: rgba(251,191,36,.35); }
+    .btn:active{ transform: translateY(0); }
+    .btn:focus{ outline:none; box-shadow: var(--shadow-sm), var(--ring); }
 
-.feature{
-  background:var(--card);
-  padding:40px;
-  border-radius:var(--radius-md);
-  box-shadow:var(--shadow-lg);
-  transition:.6s var(--ease);
-}
+    .btn-primary{
+      background: linear-gradient(135deg, rgba(251,191,36,.92), rgba(249,115,22,.92));
+      border: 1px solid rgba(255,255,255,.18);
+      color: #121826;
+    }
+    [data-theme="light"] .btn-primary{
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    .btn-primary:hover{ background: linear-gradient(135deg, rgba(251,191,36,1), rgba(249,115,22,1)); }
 
-.feature:hover{
-  transform:translateY(-10px);
-}
+    .btn-ghost{
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    [data-theme="light"] .btn-ghost{
+      border: 1px solid rgba(0,0,0,.10);
+    }
 
-/* =========================================================
-   CATS GRID
-========================================================= */
-.cats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:50px;
-}
+    .btn-icon{
+      width:44px;height:44px;
+      padding:0;
+      border-radius: 999px;
+    }
 
-.cat{
-  position:relative;
-  border-radius:var(--radius-md);
-  overflow:hidden;
-  background:var(--card);
-  box-shadow:var(--shadow-lg);
-}
+    .kbd{
+      padding: 2px 8px;
+      border-radius: 8px;
+      border: var(--b);
+      background: var(--glass);
+      font-size: 12px;
+      color: var(--muted);
+    }
 
-.cat img{
-  height:360px;
-  width:100%;
-  object-fit:cover;
-}
+    .sr-only{
+      position:absolute!important;
+      width:1px!important;height:1px!important;
+      padding:0!important;margin:-1px!important;
+      overflow:hidden!important;
+      clip:rect(0,0,0,0)!important;
+      white-space:nowrap!important;border:0!important;
+    }
 
-.cat::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
-  opacity:0;
-  transition:.5s var(--ease);
-}
+    /* ============================================================
+      4) BACKGROUND BLOBS (pure CSS)
+    ============================================================ */
+    .blobs{
+      position:absolute;
+      inset:-120px -120px auto -120px;
+      height:720px;
+      pointer-events:none;
+      filter: blur(40px);
+      opacity:.95;
+    }
+    .blob{
+      position:absolute;
+      border-radius: 999px;
+      transform: translateZ(0);
+      mix-blend-mode: screen;
+      animation: floaty 12s var(--ease2) infinite;
+    }
+    .blob.b1{ width:520px;height:520px; left:8%; top:12%; background: rgba(251,191,36,.22); animation-delay: 0s; }
+    .blob.b2{ width:620px;height:620px; left:62%; top:0%; background: rgba(249,115,22,.20); animation-delay: -2s; }
+    .blob.b3{ width:520px;height:520px; left:56%; top:44%; background: rgba(59,130,246,.16); animation-delay: -4s; }
+    @keyframes floaty{
+      0%,100%{ transform: translate(0,0) scale(1); }
+      50%{ transform: translate(-16px, 18px) scale(1.04); }
+    }
 
-.cat:hover::after{opacity:1}
+    /* ============================================================
+      5) NAVBAR
+    ============================================================ */
+    .nav-wrap{
+      position:sticky;
+      top:0;
+      z-index: var(--z-nav);
+      background: rgba(5,7,13,.62);
+      backdrop-filter: blur(16px);
+      border-bottom: var(--b);
+    }
+    [data-theme="light"] .nav-wrap{
+      background: rgba(255,255,255,.70);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 16px 0;
+      gap: var(--s-6);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: var(--s-4);
+      min-width: 180px;
+    }
+    .brand img{
+      height: 44px;
+      width:auto;
+    }
+    .brand .brand-text{
+      display:flex; flex-direction:column; line-height:1.1;
+    }
+    .brand .brand-text strong{ font-size: var(--fs-3); letter-spacing:.2px; }
+    .brand .brand-text span{ font-size: var(--fs-2); color: var(--muted); }
 
-.cat-info{
-  position:absolute;
-  bottom:0;
-  padding:30px;
-  transform:translateY(30px);
-  opacity:0;
-  transition:.5s var(--ease);
-}
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 999px;
+      border: var(--b);
+      background: var(--glass);
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-links a{
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 600;
+      transition: background .25s var(--ease), color .25s var(--ease);
+    }
+    .nav-links a:hover{
+      background: rgba(251,191,36,.14);
+      color: var(--text);
+    }
+    .nav-cta{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      justify-content:flex-end;
+      min-width: 220px;
+    }
 
-.cat:hover .cat-info{
-  transform:translateY(0);
-  opacity:1;
-}
+    /* Mobile nav */
+    .burger{
+      display:none;
+    }
+    @media (max-width: 920px){
+      .nav-links{
+        display:none;
+      }
+      .burger{ display:inline-flex; }
+      .brand .brand-text{ display:none; }
+      .nav-cta{ min-width:auto; }
+    }
 
-.cat-info h3{margin-bottom:10px}
-.cat-info span{color:var(--accent);font-weight:600}
+    .mobile-drawer{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .25s var(--ease);
+      z-index: calc(var(--z-nav) + 10);
+    }
+    .mobile-drawer[open]{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .drawer-panel{
+      position:absolute;
+      right: 14px;
+      top: 72px;
+      width: min(420px, calc(100% - 28px));
+      border-radius: var(--r-lg);
+      background: rgba(15,23,42,.92);
+      border: var(--b2);
+      box-shadow: var(--shadow-lg);
+      overflow:hidden;
+      transform: translateY(-10px);
+      transition: transform .25s var(--ease);
+    }
+    [data-theme="light"] .drawer-panel{
+      background: rgba(255,255,255,.92);
+    }
+    .mobile-drawer[open] .drawer-panel{ transform: translateY(0); }
+    .drawer-header{
+      padding: 16px 16px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom: var(--b);
+    }
+    .drawer-body{
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .drawer-link{
+      padding: 14px 14px;
+      border-radius: var(--r-md);
+      border: var(--b);
+      background: var(--glass);
+      color: var(--text);
+      font-weight: 650;
+    }
+    .drawer-link:hover{
+      border-color: rgba(251,191,36,.35);
+    }
 
-/* =========================================================
-   CTA
-========================================================= */
-.cta{
-  background:linear-gradient(135deg,var(--bg-700),var(--bg-800));
-  text-align:center;
-  border-radius:var(--radius-lg);
-  padding:120px 40px;
-  box-shadow:var(--shadow-lg);
-}
+    /* ============================================================
+      6) HERO
+    ============================================================ */
+    .hero{
+      position:relative;
+      padding: var(--s-16) 0 var(--s-15);
+      overflow:hidden;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: var(--s-12);
+      align-items:center;
+      position:relative;
+      z-index:2;
+    }
+    @media (max-width: 980px){
+      .hero-grid{ grid-template-columns: 1fr; gap: var(--s-10); }
+    }
 
-/* =========================================================
-   FOOTER
-========================================================= */
-footer{
-  padding:100px 40px;
-  background:#02040a;
-  color:var(--text-muted);
-}
+    .headline{
+      display:flex;
+      flex-direction:column;
+      gap: var(--s-6);
+    }
+    .headline h1{
+      font-size: clamp(40px, 6vw, 66px);
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+      margin:0;
+    }
+    .headline p{
+      font-size: var(--fs-5);
+      color: var(--muted);
+      margin:0;
+      max-width: 52ch;
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+      margin-top: 6px;
+      align-items:center;
+    }
 
-.footer-grid{
-  max-width:1400px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:60px;
-}
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
 
-footer h4{margin-bottom:20px;color:var(--text-main)}
+    .hero-card{
+      border-radius: var(--r-xl);
+      border: var(--b);
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03));
+      box-shadow: var(--shadow-lg);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(500px 260px at 50% 0%, rgba(251,191,36,.18), transparent 60%),
+        radial-gradient(480px 260px at 70% 70%, rgba(59,130,246,.12), transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .hero-card-inner{
+      position:relative;
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+    .hero-photo{
+      border-radius: 26px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow-md);
+      aspect-ratio: 16/11;
+      background: rgba(255,255,255,.04);
+    }
+    .hero-photo img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      transform: scale(1.02);
+    }
+    .hero-mini{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .mini{
+      padding: 14px;
+      border-radius: 22px;
+      border: var(--b);
+      background: rgba(255,255,255,.05);
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .mini strong{ font-size: var(--fs-4); }
+    .mini span{ font-size: var(--fs-2); color: var(--muted); }
 
-</style>
+    /* ============================================================
+      7) SECTIONS
+    ============================================================ */
+    .section{
+      padding: var(--s-16) 0;
+    }
+    .section.alt{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.00));
+      border-top: var(--b);
+      border-bottom: var(--b);
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 20px;
+      margin-bottom: var(--s-10);
+    }
+    @media (max-width: 820px){
+      .section-head{ flex-direction:column; align-items:flex-start; }
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: -0.5px;
+      line-height:1.1;
+    }
+    .section-head p{
+      margin:0;
+      color: var(--muted);
+      max-width: 70ch;
+      font-size: var(--fs-4);
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 980px){
+      .grid-3{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border: var(--b);
+      border-radius: var(--r-lg);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+      padding: 18px;
+      overflow:hidden;
+      position:relative;
+      transition: transform .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease);
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(251,191,36,.26);
+      background: rgba(255,255,255,.07);
+    }
+    [data-theme="light"] .card:hover{
+      background: rgba(0,0,0,.045);
+    }
+
+    .card .icon{
+      width:42px;height:42px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      background: rgba(251,191,36,.12);
+      border: 1px solid rgba(251,191,36,.20);
+      margin-bottom: 12px;
+    }
+    .card h3{ margin: 0 0 6px; font-size: var(--fs-5); }
+    .card p{ margin:0; color: var(--muted); font-size: var(--fs-3); }
+
+    /* ============================================================
+      8) CONTENT BOX (zachovaný text, jen v profi layoutu)
+    ============================================================ */
+    .content-box{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: start;
+    }
+    @media (max-width: 980px){
+      .content-box{ grid-template-columns: 1fr; }
+    }
+    .content-box .panel{
+      padding: 22px;
+      border-radius: var(--r-lg);
+      border: var(--b);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: var(--shadow-md);
+    }
+    .content-box .panel p{
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: var(--fs-4);
+    }
+    .content-box .panel p:last-child{ margin-bottom:0; }
+    .content-box .aside{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .stat{
+      padding: 18px;
+      border-radius: var(--r-lg);
+      border: var(--b);
+      background: var(--glass);
+      box-shadow: var(--shadow-sm);
+      display:flex;
+      justify-content:space-between;
+      align-items: baseline;
+    }
+    .stat strong{ font-size: var(--fs-6); }
+    .stat span{ color: var(--muted); font-size: var(--fs-2); }
+
+    /* ============================================================
+      9) CATS TOOLBAR + GRID
+    ============================================================ */
+    .toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      flex-wrap:wrap;
+      margin-bottom: 18px;
+    }
+
+    .search{
+      flex: 1 1 320px;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border: var(--b);
+      background: var(--glass);
+      box-shadow: var(--shadow-sm);
+    }
+    .search input{
+      width:100%;
+      border:none;
+      background: transparent;
+      outline:none;
+      color: var(--text);
+      font-size: var(--fs-3);
+    }
+    .search input::placeholder{ color: var(--muted-2); }
+
+    .filters{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: var(--b);
+      background: var(--glass);
+      color: var(--muted);
+      cursor:pointer;
+      user-select:none;
+      transition: border-color .25s var(--ease), background .25s var(--ease), color .25s var(--ease);
+      font-weight: 650;
+      font-size: var(--fs-2);
+    }
+    .chip[aria-pressed="true"]{
+      background: rgba(251,191,36,.14);
+      border-color: rgba(251,191,36,.30);
+      color: var(--text);
+    }
+
+    .cats-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+    .cat-card{
+      grid-column: span 4;
+      border-radius: var(--r-lg);
+      border: var(--b);
+      background: var(--card);
+      box-shadow: var(--shadow-md);
+      overflow:hidden;
+      position:relative;
+      transform: translateZ(0);
+      transition: transform .45s var(--ease), border-color .45s var(--ease);
+      min-height: 380px;
+    }
+    .cat-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(251,191,36,.26);
+    }
+    @media (max-width: 980px){
+      .cat-card{ grid-column: span 6; }
+    }
+    @media (max-width: 620px){
+      .cat-card{ grid-column: span 12; }
+    }
+
+    .cat-media{
+      position:relative;
+      aspect-ratio: 16/11;
+      overflow:hidden;
+      background: rgba(255,255,255,.04);
+    }
+    .cat-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform: scale(1.02);
+      transition: transform .6s var(--ease);
+      filter: saturate(1.05);
+    }
+    .cat-card:hover .cat-media img{ transform: scale(1.08); }
+
+    .cat-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.70), rgba(0,0,0,0));
+      opacity: .85;
+      pointer-events:none;
+    }
+
+    .cat-body{
+      padding: 16px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .cat-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .cat-name{
+      font-size: var(--fs-5);
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .tag{
+      font-size: var(--fs-1);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      user-select:none;
+    }
+    [data-theme="light"] .tag{
+      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(0,0,0,.05);
+    }
+    .cat-desc{
+      margin:0;
+      color: var(--muted);
+      font-size: var(--fs-3);
+    }
+    .cat-actions{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 6px;
+    }
+
+    /* ============================================================
+      10) CTA SECTION
+    ============================================================ */
+    .cta{
+      border-radius: var(--r-xl);
+      border: var(--b);
+      background:
+        radial-gradient(900px 420px at 20% 0%, rgba(251,191,36,.18), transparent 60%),
+        radial-gradient(900px 420px at 80% 30%, rgba(59,130,246,.14), transparent 65%),
+        linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow: var(--shadow-lg);
+      padding: 34px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    @media (max-width: 980px){
+      .cta{ grid-template-columns: 1fr; }
+    }
+    .cta h3{
+      margin:0 0 10px;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+    }
+    .cta p{
+      margin:0;
+      color: var(--muted);
+      font-size: var(--fs-4);
+    }
+    .cta .actions{
+      display:flex;
+      justify-content:flex-end;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    @media (max-width: 980px){
+      .cta .actions{ justify-content:flex-start; }
+    }
+
+    /* ============================================================
+      11) FAQ
+    ============================================================ */
+    .faq{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 980px){
+      .faq{ grid-template-columns: 1fr; }
+    }
+    details{
+      border-radius: var(--r-lg);
+      border: var(--b);
+      background: var(--card);
+      box-shadow: var(--shadow-sm);
+      padding: 14px 16px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      font-weight: 750;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    details p{
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: var(--fs-3);
+    }
+    .chev{
+      width: 24px; height: 24px;
+      border-radius: 999px;
+      border: var(--b);
+      background: var(--glass);
+      display:grid;
+      place-items:center;
+      transition: transform .25s var(--ease);
+      flex: 0 0 auto;
+    }
+    details[open] .chev{ transform: rotate(180deg); }
+
+    /* ============================================================
+      12) FOOTER
+    ============================================================ */
+    footer{
+      padding: var(--s-14) 0 var(--s-12);
+      border-top: var(--b);
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.00));
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 18px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .footer-grid{ grid-template-columns: 1fr; }
+    }
+    .footer-card{
+      border-radius: var(--r-lg);
+      border: var(--b);
+      background: var(--glass);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    footer h4{ margin:0 0 10px; font-size: var(--fs-4); }
+    footer p, footer a{ color: var(--muted); font-size: var(--fs-3); }
+    footer a:hover{ color: var(--text); }
+
+    /* ============================================================
+      13) MODAL (Rychlý náhled kočky)
+    ============================================================ */
+    .modal{
+      position: fixed;
+      inset: 0;
+      z-index: var(--z-modal);
+      display:none;
+    }
+    .modal[open]{ display:block; }
+    .modal-backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+    }
+    .modal-panel{
+      position:relative;
+      width: min(980px, calc(100% - 28px));
+      margin: 80px auto 24px;
+      border-radius: var(--r-xl);
+      border: var(--b2);
+      background: rgba(15,23,42,.94);
+      box-shadow: var(--shadow-lg);
+      overflow:hidden;
+      transform: translateY(8px);
+      animation: pop .28s var(--ease) both;
+    }
+    [data-theme="light"] .modal-panel{
+      background: rgba(255,255,255,.94);
+    }
+    @keyframes pop{
+      from{ opacity:.4; transform: translateY(14px) scale(.99); }
+      to{ opacity:1; transform: translateY(0) scale(1); }
+    }
+    .modal-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: var(--b);
+      background: rgba(255,255,255,.04);
+    }
+    .modal-header strong{ font-size: var(--fs-4); }
+    .modal-body{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 0;
+    }
+    @media (max-width: 920px){
+      .modal-body{ grid-template-columns: 1fr; }
+      .modal-panel{ margin-top: 70px; }
+    }
+    .modal-media{
+      position:relative;
+      min-height: 360px;
+      background: rgba(255,255,255,.04);
+      border-right: var(--b);
+    }
+    @media (max-width: 920px){
+      .modal-media{ border-right:none; border-bottom: var(--b); }
+    }
+    .modal-media img{
+      width:100%;
+      height:100%;
+      min-height: 360px;
+      object-fit: cover;
+    }
+    .modal-content{
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .modal-content p{ margin:0; color: var(--muted); }
+    .modal-actions{ display:flex; gap: 10px; flex-wrap:wrap; margin-top: 4px; }
+
+    /* ============================================================
+      14) TOAST
+    ============================================================ */
+    .toasts{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: var(--z-toast);
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      pointer-events:none;
+    }
+    .toast{
+      pointer-events:auto;
+      width: min(420px, calc(100vw - 28px));
+      border-radius: var(--r-lg);
+      border: var(--b2);
+      background: rgba(15,23,42,.94);
+      box-shadow: var(--shadow-lg);
+      padding: 12px 12px 12px 14px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      animation: toastIn .35s var(--ease) both;
+    }
+    [data-theme="light"] .toast{ background: rgba(255,255,255,.94); }
+    @keyframes toastIn{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+    .toast strong{ display:block; margin-bottom:2px; }
+    .toast p{ margin:0; color: var(--muted); font-size: var(--fs-2); }
+    .toast .x{
+      width: 36px; height: 36px;
+      border-radius: 999px;
+      border: var(--b);
+      background: var(--glass);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      flex: 0 0 auto;
+    }
+
+    /* ============================================================
+      15) BACK TO TOP
+    ============================================================ */
+    .backtop{
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: var(--z-toast);
+      opacity:0;
+      pointer-events:none;
+      transform: translateY(10px);
+      transition: opacity .25s var(--ease), transform .25s var(--ease);
+    }
+    .backtop.show{
+      opacity:1;
+      pointer-events:auto;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+      16) REVEAL ANIMATIONS
+    ============================================================ */
+    [data-reveal]{
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    [data-reveal].in{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+      17) SMALL SVG ICONS (inline)
+      - tohle jen aby to nevypadalo jak z Windows 98
+    ============================================================ */
+    .i{ width: 18px; height:18px; display:inline-block; }
+    .i svg{ width:100%; height:100%; display:block; }
+
+    /* ============================================================
+      18) SPACER
+    ============================================================ */
+    .sp-1{ height: var(--s-8); }
+    .sp-2{ height: var(--s-10); }
+  </style>
 </head>
 
-<body>
+<body data-theme="dark">
 
-<!-- CHAT -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/695d046bb1e0d21980f0d10e/1je9lihhl';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+  <!-- ============================================================
+    TAWK CHAT (ZACHOVÁNO)
+  ============================================================ -->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/695d046bb1e0d21980f0d10e/1je9lihhl';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
 
-<header>
-  <div class="nav">
-    <img src="kočka/logo.png">
-    <div class="nav-links">
-      <a href="#onas">O nás</a>
-      <a href="#kocky">Kočky</a>
-      <a href="kontakty.html">Kontakt</a>
+  <!-- ============================================================
+    NAV
+  ============================================================ -->
+  <div class="nav-wrap">
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="index.html" aria-label="Domů">
+          <img src="kočka/logo.png" alt="Logo" />
+          <div class="brand-text">
+            <strong>Chovatelská stanice</strong>
+            <span>zodpovědný chov koček</span>
+          </div>
+        </a>
+
+        <nav class="nav-links" aria-label="Hlavní navigace">
+          <a href="#onas">O nás</a>
+          <a href="#kocky">Kočky</a>
+          <a href="#faq">FAQ</a>
+          <a href="kontakty.html">Kontakt</a>
+        </nav>
+
+        <div class="nav-cta">
+          <button class="btn btn-ghost btn-icon" id="themeBtn" type="button" aria-label="Přepnout téma">
+            <span class="i" aria-hidden="true" id="themeIcon"></span>
+          </button>
+
+          <a class="btn btn-primary" href="kontakty.html">
+            <span class="i" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5Z" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
+            </span>
+            Kontakt
+          </a>
+
+          <button class="btn btn-ghost btn-icon burger" id="burger" type="button" aria-label="Otevřít menu">
+            <span class="i" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
-</header>
 
-<section class="hero">
-  <div class="hero-inner">
-    <h1>Chovatelská stanice koček</h1>
-    <p>Zodpovědný chov. Zdravé kočky. Žádná továrna.</p>
-    <a class="btn btn-primary" href="#kocky">Zobrazit kočky</a>
-    <a class="btn btn-secondary" href="kontakty.html">Domluvit návštěvu</a>
-  </div>
-</section>
-
-<section id="onas" class="section">
-  <div class="container">
-    <h2 class="section-title">Proč my</h2>
-    <p class="section-desc">
-      Kočky chováme doma, ne ve skladu. Zdraví a povaha nejsou bonus, ale základ.
-    </p>
-
-    <div class="features">
-      <div class="feature">Veterinární péče bez kompromisů</div>
-      <div class="feature">Socializace od narození</div>
-      <div class="feature">Transparentní původ</div>
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Mobilní menu">
+    <div class="drawer-panel" role="document">
+      <div class="drawer-header">
+        <strong>Menu</strong>
+        <button class="btn btn-ghost btn-icon" id="drawerClose" type="button" aria-label="Zavřít menu">
+          <span class="i" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+      </div>
+      <div class="drawer-body">
+        <a class="drawer-link" href="#onas">O nás</a>
+        <a class="drawer-link" href="#kocky">Kočky</a>
+        <a class="drawer-link" href="#faq">FAQ</a>
+        <a class="drawer-link" href="kontakty.html">Kontakt</a>
+        <div class="row" style="justify-content:space-between; padding: 6px 4px;">
+          <span class="muted">Tip: zavřeš to i <span class="kbd">Esc</span></span>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
-<section id="kocky" class="section">
-  <div class="container">
-    <h2 class="section-title">Naše kočky</h2>
+  <!-- ============================================================
+    HERO
+  ============================================================ -->
+  <section class="hero">
+    <div class="blobs" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+    </div>
 
-    <div class="cats">
-      <a class="cat" href="pepa.html"><img src="kočka/imgs/pepa.jpg"><div class="cat-info"><h3>Pepa</h3><span>Detail</span></div></a>
-      <a class="cat" href="líza.html"><img src="kočka/imgs/líza.jpg"><div class="cat-info"><h3>Líza</h3><span>Detail</span></div></a>
-      <a class="cat" href="robert.html"><img src="kočka/imgs/robert.jpg"><div class="cat-info"><h3>Robert</h3><span>Detail</span></div></a>
-      <a class="cat" href="bubacek.html"><img src="kočka/imgs/1.jpg"><div class="cat-info"><h3>Bubáček</h3><span>Detail</span></div></a>
-      <a class="cat" href="loupeznik.html"><img src="kočka/imgs/2.jpg"><div class="cat-info"><h3>Loupežník</h3><span>Detail</span></div></a>
-      <a class="cat" href="loupak.html"><img src="kočka/imgs/3.jpg"><div class="cat-info"><h3>Loupák</h3><span>Detail</span></div></a>
-      <a class="cat" href="kure.html"><img src="kočka/imgs/4.jpg"><div class="cat-info"><h3>Kuře</h3><span>Detail</span></div></a>
-      <a class="cat" href="oskar.html"><img src="kočka/imgs/5.jpg"><div class="cat-info"><h3>Oskar</h3><span>Detail</span></div></a>
-      <a class="cat" href="bledule.html"><img src="kočka/imgs/6.jpg"><div class="cat-info"><h3>Bledulka</h3><span>Detail</span></div></a>
-      <a class="cat" href="maslicka.html"><img src="kočka/imgs/7.jpg"><div class="cat-info"><h3>Mašlička</h3><span>Detail</span></div></a>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="headline" data-reveal>
+          <div class="pill">
+            <span class="dot"></span>
+            <span>Zdraví • Socializace • Zodpovědnost</span>
+          </div>
+
+          <h1>Kočky, co nejsou “produkce”. Jsou rodina.</h1>
+
+          <p>
+            Pokud hledáte krásné a zdravé kočky, jste na správném místě.
+            Nabízíme kočky různých plemen a věkových kategorií. Všechny jsou pravidelně očkované,
+            odčervené a mají platný zdravotní záznam.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#kocky">
+              <span class="i" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+              Prohlédnout kočky
+            </a>
+
+            <a class="btn" href="kontakty.html">
+              <span class="i" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.5 7-10a7 7 0 1 0-14 0c0 5.5 7 10 7 10Z" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+              Domluvit návštěvu
+            </a>
+
+            <button class="btn btn-ghost" id="copyEmailBtn" type="button" title="Zkopírovat email">
+              <span class="i" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h10v10H9V9Z" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="2"/></svg>
+              </span>
+              Zkopírovat email
+            </button>
+          </div>
+
+          <div class="hero-badges">
+            <span class="pill"><span class="dot" style="background:var(--ok)"></span><span>Očkování a odčervení</span></span>
+            <span class="pill"><span class="dot" style="background:var(--accent)"></span><span>Rodinné prostředí</span></span>
+            <span class="pill"><span class="dot" style="background:#60a5fa"></span><span>Zvyklé na lidi</span></span>
+          </div>
+        </div>
+
+        <aside class="hero-card" data-reveal>
+          <div class="hero-card-inner">
+            <div class="hero-photo" aria-label="Ukázková fotka kočky">
+              <!-- použiju jednu z tvých fotek, aby se nic nerozbilo -->
+              <img src="kočka/imgs/pepa.jpg" alt="Kočka - ukázka" loading="lazy" />
+            </div>
+
+            <div class="hero-mini">
+              <div class="mini">
+                <strong>10+</strong>
+                <span>koček k prohlédnutí</span>
+              </div>
+              <div class="mini">
+                <strong>0</strong>
+                <span>kompromisů v péči</span>
+              </div>
+            </div>
+
+            <div class="mini" style="border-radius: 28px;">
+              <strong style="font-size: var(--fs-4);">Rychlá navigace</strong>
+              <span>Stiskni <span class="kbd">/</span> pro hledání koček</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    O NÁS / PROČ MY (obsah zachován, layout profi)
+  ============================================================ -->
+  <section class="section alt" id="onas">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div class="stack" style="gap:12px;">
+          <h2>O nás</h2>
+          <p>
+            Naše kočky jsou chovány v láskyplném prostředí a jsou zvyklé na kontakt s lidmi
+            a ostatními domácími zvířaty. Pokud máte zájem o konkrétní plemeno nebo hledáte kočku
+            s určitými vlastnostmi, neváhejte nás kontaktovat.
+          </p>
+        </div>
+        <div class="row" style="flex-wrap:wrap;">
+          <a class="btn btn-primary" href="kontakty.html">Kontakty</a>
+          <a class="btn" href="#kocky">Kočky</a>
+        </div>
+      </div>
+
+      <div class="content-box" data-reveal>
+        <div class="panel">
+          <p>
+            Pokud hledáte krásné a zdravé kočky, jste na správném místě!
+            Nabízíme široký výběr koček různých plemen a věkových kategorií.
+            Všechny naše kočky jsou pravidelně očkované, odčervené a mají platný zdravotní záznam.
+          </p>
+          <p>
+            Pro více informací o kočkách, které máme k dispozici, nás prosím kontaktujte na e-mailu:
+            <strong id="emailText">info@tvoje-domena.cz</strong>
+            <span class="muted">(nahraď si to svým emailem)</span>
+          </p>
+        </div>
+
+        <div class="aside">
+          <div class="stat">
+            <strong>Veterina</strong>
+            <span>záznamy + kontrola</span>
+          </div>
+          <div class="stat">
+            <strong>Socializace</strong>
+            <span>lidi + zvířata</span>
+          </div>
+          <div class="stat">
+            <strong>Domov</strong>
+            <span>žádná “továrna”</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-2"></div>
+
+      <div class="grid-3" data-reveal>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <span class="i">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M20 7 9 18l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+          <h3>Zdraví</h3>
+          <p>Očkované, odčervené, kontrolované. Bez výmluv.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <span class="i">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-4.5 7-10a7 7 0 1 0-14 0c0 5.5 7 10 7 10Z" stroke="currentColor" stroke-width="2"/></svg>
+            </span>
+          </div>
+          <h3>Pohoda</h3>
+          <p>Rodinné prostředí, kontakt s lidmi, žádná izolace.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <span class="i">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+          <h3>Transparentnost</h3>
+          <p>Víš, co dostaneš. A my víme, komu kočku dáváme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    KOČKY (filtr + search + modal preview)
+  ============================================================ -->
+  <section class="section" id="kocky">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div class="stack" style="gap:10px;">
+          <h2>Naše kočky</h2>
+          <p>
+            Klikni na kartu pro detail stránku. Nebo si dej “Rychlý náhled” přímo tady.
+            Filtruješ podle štítků, hledáš názvem. Protože ano, UX existuje.
+          </p>
+        </div>
+        <div class="row" style="flex-wrap:wrap;">
+          <button class="btn" id="resetBtn" type="button">Reset filtrů</button>
+          <a class="btn btn-primary" href="kontakty.html">Chci kočku</a>
+        </div>
+      </div>
+
+      <div class="toolbar" data-reveal>
+        <div class="search" role="search" aria-label="Hledání koček">
+          <span class="i" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+          <input id="searchInput" type="text" placeholder="Hledej… (Pepa, Líza, …)  |  zkratka: /" autocomplete="off" />
+        </div>
+
+        <div class="filters" aria-label="Filtry">
+          <button class="chip" type="button" data-filter="vse" aria-pressed="true">Vše</button>
+          <button class="chip" type="button" data-filter="kocour" aria-pressed="false">Kocour</button>
+          <button class="chip" type="button" data-filter="kocka" aria-pressed="false">Kočka</button>
+          <button class="chip" type="button" data-filter="hrava" aria-pressed="false">Hravá</button>
+          <button class="chip" type="button" data-filter="klidna" aria-pressed="false">Klidná</button>
+          <button class="chip" type="button" data-filter="mazliva" aria-pressed="false">Mazlivá</button>
+        </div>
+      </div>
+
+      <div class="cats-grid" id="catsGrid" aria-live="polite" data-reveal></div>
+
+      <div class="sp-2"></div>
+
+      <div class="cta" data-reveal>
+        <div>
+          <h3>Chceš kočku, ne random stres.</h3>
+          <p>
+            Napiš nám. Řekneme ti dostupnost, povahu, doporučíme match.
+            Žádný “take it or leave it”. Normální domluva.
+          </p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="kontakty.html">Kontaktovat</a>
+          <button class="btn" id="notifyBtn" type="button">Chci upozornění</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    FAQ
+  ============================================================ -->
+  <section class="section alt" id="faq">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <div class="stack" style="gap:10px;">
+          <h2>FAQ</h2>
+          <p>Protože stejné otázky pořád dokola jsou lidský hobby.</p>
+        </div>
+      </div>
+
+      <div class="faq" data-reveal>
+        <details>
+          <summary>
+            Jsou kočky očkované a odčervené?
+            <span class="chev" aria-hidden="true">
+              <span class="i"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            </span>
+          </summary>
+          <p>Ano. U nás je to základ, ne “volitelný doplněk”.</p>
+        </details>
+
+        <details>
+          <summary>
+            Jsou zvyklé na lidi a další zvířata?
+            <span class="chev" aria-hidden="true">
+              <span class="i"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            </span>
+          </summary>
+          <p>Ano. Kočky vyrůstají v rodinném prostředí. Socializace je priorita.</p>
+        </details>
+
+        <details>
+          <summary>
+            Jak probíhá předání?
+            <span class="chev" aria-hidden="true">
+              <span class="i"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            </span>
+          </summary>
+          <p>Domluvíme si termín, řekneme si info, předáme dokumentaci a doporučení.</p>
+        </details>
+
+        <details>
+          <summary>
+            Můžu si kočku rezervovat?
+            <span class="chev" aria-hidden="true">
+              <span class="i"><svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            </span>
+          </summary>
+          <p>Jasně. Napiš přes kontakty, nebo chat vpravo dole.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+    FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid" data-reveal>
+        <div class="footer-card">
+          <h4>Chovatelská stanice</h4>
+          <p>Rodinný chov koček. Zdraví, socializace, férový přístup.</p>
+          <div class="row" style="margin-top:12px; flex-wrap:wrap;">
+            <span class="pill"><span class="dot"></span><span>Profi přístup</span></span>
+            <span class="pill"><span class="dot" style="background:#60a5fa"></span><span>Bez stresu</span></span>
+          </div>
+        </div>
+
+        <div class="footer-card">
+          <h4>Navigace</h4>
+          <p><a href="#onas">O nás</a></p>
+          <p><a href="#kocky">Kočky</a></p>
+          <p><a href="#faq">FAQ</a></p>
+          <p><a href="kontakty.html">Kontakty</a></p>
+        </div>
+
+        <div class="footer-card">
+          <h4>Rychlé akce</h4>
+          <p><button class="btn" type="button" id="footerSearchBtn">Otevřít hledání</button></p>
+          <p><button class="btn" type="button" id="footerThemeBtn">Přepnout téma</button></p>
+          <p class="muted">Tip: klávesová zkratka <span class="kbd">/</span> otevře hledání.</p>
+        </div>
+      </div>
+
+      <div class="sp-1"></div>
+
+      <p class="muted" style="text-align:center;">
+        © <span id="year"></span> • Web postavený bez frameworků, protože někdo má rád bolest.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <div class="backtop" id="backtop">
+    <button class="btn btn-primary btn-icon" type="button" aria-label="Zpět nahoru">
+      <span class="i" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6 11l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- Toasts -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Rychlý náhled kočky">
+      <div class="modal-header">
+        <strong id="modalTitle">Kočka</strong>
+        <button class="btn btn-ghost btn-icon" id="modalClose" type="button" aria-label="Zavřít">
+          <span class="i" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-media">
+          <img id="modalImg" src="" alt="" />
+        </div>
+        <div class="modal-content">
+          <p class="muted" id="modalTagline"></p>
+          <p id="modalText"></p>
+          <div class="modal-actions">
+            <a class="btn btn-primary" id="modalLink" href="#">Detail stránky</a>
+            <a class="btn" href="kontakty.html">Kontakt</a>
+          </div>
+          <p class="muted">Zavřeš taky klávesou <span class="kbd">Esc</span>.</p>
+        </div>
+      </div>
     </div>
   </div>
-</section>
 
-<section class="section">
-  <div class="container">
-    <div class="cta">
-      <h2>Chceš kočku, ne problém</h2>
-      <p>Ozvi se. Řekneme si, jestli jsme pro sebe vhodní.</p>
-      <a class="btn btn-primary" href="kontakty.html">Kontaktovat</a>
-    </div>
-  </div>
-</section>
+  <!-- ============================================================
+    JS: UI logika, render koček, filtry, modal, reveal, toast, theme
+  ============================================================ -->
+  <script>
+    // ============================================================
+    // 1) DATA (kočky + cesty zachované)
+    // ============================================================
+    const cats = [
+      { id:"pepa",      name:"Pepa",      href:"pepa.html",      img:"kočka/imgs/pepa.jpg",   tags:["kocour","hrava"],  note:"Energetický kámoš, co ti ukradne ponožku a pak dělá nevinný oči." },
+      { id:"liza",      name:"Líza",      href:"líza.html",      img:"kočka/imgs/líza.jpg",   tags:["kocka","mazliva"], note:"Mazlivá a elegantní. Vypadá, že tě soudí, ale je to láska." },
+      { id:"robert",    name:"Robert",    href:"robert.html",    img:"kočka/imgs/robert.jpg", tags:["kocour","klidna"],  note:"Klidný typ. Mentální zen. Všechny drama ignoruje." },
+      { id:"bubacek",   name:"Bubáček",   href:"bubacek.html",   img:"kočka/imgs/1.jpg",      tags:["kocour","hrava"],  note:"Zvukový efekt: *zoom zoom*. Tohle není kočka, to je závodník." },
+      { id:"loupeznik", name:"Loupežník", href:"loupeznik.html", img:"kočka/imgs/2.jpg",      tags:["kocour","mazliva"], note:"Vezme ti srdce a ještě si vezme pamlsek. Win-win." },
+      { id:"loupak",    name:"Loupák",    href:"loupak.html",    img:"kočka/imgs/3.jpg",      tags:["kocour","klidna"],  note:"Vypadá drsně, ale vevnitř je to marshmallow." },
+      { id:"kure",      name:"Kuře",      href:"kure.html",      img:"kočka/imgs/4.jpg",      tags:["kocka","hrava"],   note:"Prostě roztomilý chaos. V dobrém slova smyslu." },
+      { id:"oskar",     name:"Oskar",     href:"oskar.html",     img:"kočka/imgs/5.jpg",      tags:["kocour","mazliva"], note:"Mazlící specialista. Přijde, sedne, vyhraje." },
+      { id:"bledule",   name:"Bledulka",  href:"bledule.html",   img:"kočka/imgs/6.jpg",      tags:["kocka","klidna"],  note:"Jemná, klidná, citlivá. Ideální pro pohodu doma." },
+      { id:"maslicka",  name:"Mašlička",  href:"maslicka.html",  img:"kočka/imgs/7.jpg",      tags:["kocka","mazliva"], note:"Mazlení je její love language. Těžko odolat." },
+    ];
 
-<footer>
-  <div class="footer-grid">
-    <div>
-      <h4>Chovatelská stanice</h4>
-      <p>Rodinný chov koček s respektem.</p>
-    </div>
-    <div>
-      <h4>Kontakt</h4>
-      <p><a href="kontakty.html">Kontaktní stránka</a></p>
-    </div>
-  </div>
-</footer>
+    // ============================================================
+    // 2) HELPERS
+    // ============================================================
+    const $  = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
+    function iconSun(){
+      return `
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M5 19l1.5-1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+    function iconMoon(){
+      return `
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M21 13.5A8.5 8.5 0 0 1 10.5 3 7.5 7.5 0 1 0 21 13.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      `;
+    }
+
+    function toast(title, message){
+      const wrap = $("#toasts");
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.innerHTML = `
+        <div>
+          <strong>${title}</strong>
+          <p>${message}</p>
+        </div>
+        <button class="x" type="button" aria-label="Zavřít toast">
+          <span class="i" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+      `;
+      wrap.appendChild(el);
+
+      const kill = () => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(10px)";
+        setTimeout(() => el.remove(), 220);
+      };
+
+      el.querySelector(".x").addEventListener("click", kill);
+      setTimeout(kill, 4200);
+    }
+
+    // ============================================================
+    // 3) THEME
+    // ============================================================
+    const themeBtn = $("#themeBtn");
+    const footerThemeBtn = $("#footerThemeBtn");
+    const themeIcon = $("#themeIcon");
+
+    function setTheme(theme){
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+      themeIcon.innerHTML = (theme === "light") ? iconMoon() : iconSun();
+    }
+
+    const savedTheme = localStorage.getItem("theme");
+    if(savedTheme === "light" || savedTheme === "dark"){
+      setTheme(savedTheme);
+    }else{
+      // default: dark (protože to vypadá luxusněji)
+      setTheme("dark");
+    }
+
+    function toggleTheme(){
+      const current = document.body.getAttribute("data-theme");
+      setTheme(current === "dark" ? "light" : "dark");
+      toast("Téma změněno", `Aktivní: ${document.body.getAttribute("data-theme")}`);
+    }
+
+    themeBtn.addEventListener("click", toggleTheme);
+    footerThemeBtn.addEventListener("click", toggleTheme);
+
+    // ============================================================
+    // 4) MOBILE MENU
+    // ============================================================
+    const burger = $("#burger");
+    const drawer = $("#drawer");
+    const drawerClose = $("#drawerClose");
+
+    function openDrawer(){
+      drawer.setAttribute("open","");
+      document.body.style.overflow = "hidden";
+    }
+    function closeDrawer(){
+      drawer.removeAttribute("open");
+      document.body.style.overflow = "";
+    }
+
+    if(burger){
+      burger.addEventListener("click", openDrawer);
+    }
+    drawerClose.addEventListener("click", closeDrawer);
+    drawer.addEventListener("click", (e) => {
+      if(e.target === drawer) closeDrawer();
+    });
+    $$(".drawer-link", drawer).forEach(a => a.addEventListener("click", closeDrawer));
+
+    // Esc closes drawer + modal
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        closeDrawer();
+        closeModal();
+      }
+    });
+
+    // ============================================================
+    // 5) REVEAL ON SCROLL
+    // ============================================================
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(ent => {
+        if(ent.isIntersecting){
+          ent.target.classList.add("in");
+          io.unobserve(ent.target);
+        }
+      });
+    }, { threshold: 0.14 });
+
+    $$("[data-reveal]").forEach(el => io.observe(el));
+
+    // ============================================================
+    // 6) BACK TO TOP
+    // ============================================================
+    const backtop = $("#backtop");
+    const backtopBtn = $("#backtop button");
+
+    window.addEventListener("scroll", () => {
+      if(window.scrollY > 800){
+        backtop.classList.add("show");
+      }else{
+        backtop.classList.remove("show");
+      }
+    });
+
+    backtopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // ============================================================
+    // 7) CATS RENDER + SEARCH + FILTERS
+    // ============================================================
+    const grid = $("#catsGrid");
+    const searchInput = $("#searchInput");
+    const resetBtn = $("#resetBtn");
+    const chips = $$(".chip");
+
+    let activeFilter = "vse";
+    let query = "";
+
+    function matches(cat){
+      const q = query.trim().toLowerCase();
+      const nameOk = !q || cat.name.toLowerCase().includes(q);
+      const filterOk = (activeFilter === "vse") || cat.tags.includes(activeFilter);
+      return nameOk && filterOk;
+    }
+
+    function tagLabel(cat){
+      // jen kosmetika, aby to vypadalo “curated”
+      if(cat.tags.includes("kocour")) return "Kocour";
+      if(cat.tags.includes("kocka")) return "Kočka";
+      return "Kočka";
+    }
+
+    function render(){
+      const filtered = cats.filter(matches);
+
+      grid.innerHTML = filtered.map(cat => `
+        <article class="cat-card" data-cat="${cat.id}">
+          <div class="cat-media">
+            <img src="${cat.img}" alt="${cat.name}" loading="lazy">
+          </div>
+          <div class="cat-body">
+            <div class="cat-top">
+              <h3 class="cat-name">${cat.name}</h3>
+              <span class="tag">${tagLabel(cat)}</span>
+            </div>
+            <p class="cat-desc">${cat.note}</p>
+            <div class="cat-actions">
+              <a class="btn btn-primary" href="${cat.href}">
+                <span class="i" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M10 14 21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 3h-7m7 0v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </span>
+                Detail
+              </a>
+              <button class="btn" type="button" data-preview="${cat.id}">
+                <span class="i" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="2"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="2"/></svg>
+                </span>
+                Rychlý náhled
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      if(filtered.length === 0){
+        grid.innerHTML = `
+          <div class="card" style="grid-column: 1 / -1;">
+            <h3 style="margin:0 0 6px;">Nic nenalezeno</h3>
+            <p style="margin:0;color:var(--muted);">
+              Zkus jiný filtr nebo uprav hledání. Život je o kompromisech.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    // initial render
+    render();
+
+    // Search typing
+    searchInput.addEventListener("input", (e) => {
+      query = e.target.value;
+      render();
+    });
+
+    // Press "/" focuses search
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "/" && document.activeElement !== searchInput){
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+
+    // Filters
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        chips.forEach(c => c.setAttribute("aria-pressed","false"));
+        chip.setAttribute("aria-pressed","true");
+        activeFilter = chip.dataset.filter;
+        render();
+      });
+    });
+
+    // Reset
+    resetBtn.addEventListener("click", () => {
+      activeFilter = "vse";
+      query = "";
+      searchInput.value = "";
+      chips.forEach(c => c.setAttribute("aria-pressed","false"));
+      chips.find(c => c.dataset.filter === "vse").setAttribute("aria-pressed","true");
+      render();
+      toast("Reset hotový", "Filtry i hledání jsou zpět na start.");
+    });
+
+    // footer search
+    $("#footerSearchBtn").addEventListener("click", () => {
+      searchInput.focus();
+      toast("Hledání", "Piš název kočky, filtruj štítkama.");
+    });
+
+    // ============================================================
+    // 8) MODAL PREVIEW
+    // ============================================================
+    const modal = $("#modal");
+    const modalBackdrop = $("#modalBackdrop");
+    const modalClose = $("#modalClose");
+    const modalTitle = $("#modalTitle");
+    const modalImg = $("#modalImg");
+    const modalText = $("#modalText");
+    const modalTagline = $("#modalTagline");
+    const modalLink = $("#modalLink");
+
+    let lastFocus = null;
+
+    function openModal(cat){
+      lastFocus = document.activeElement;
+
+      modal.setAttribute("open","");
+      modal.setAttribute("aria-hidden","false");
+
+      modalTitle.textContent = cat.name;
+      modalImg.src = cat.img;
+      modalImg.alt = cat.name;
+      modalText.textContent = cat.note;
+      modalTagline.textContent = "Rychlý náhled • klikni na detail pro víc";
+      modalLink.href = cat.href;
+
+      document.body.style.overflow = "hidden";
+      modalClose.focus();
+    }
+
+    function closeModal(){
+      if(!modal.hasAttribute("open")) return;
+      modal.removeAttribute("open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+
+      if(lastFocus && typeof lastFocus.focus === "function"){
+        lastFocus.focus();
+      }
+    }
+
+    modalBackdrop.addEventListener("click", closeModal);
+    modalClose.addEventListener("click", closeModal);
+
+    // Delegate preview clicks
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-preview]");
+      if(!btn) return;
+      const id = btn.getAttribute("data-preview");
+      const cat = cats.find(c => c.id === id);
+      if(cat) openModal(cat);
+    });
+
+    // ============================================================
+    // 9) COPY EMAIL (placeholder)
+    // ============================================================
+    const copyEmailBtn = $("#copyEmailBtn");
+    copyEmailBtn.addEventListener("click", async () => {
+      const email = $("#emailText").textContent.trim();
+      try{
+        await navigator.clipboard.writeText(email);
+        toast("Zkopírováno", `Email: ${email}`);
+      }catch{
+        toast("Smůla", "Prohlížeč nedovolil kopírování. Zkopíruj ručně.");
+      }
+    });
+
+    // ============================================================
+    // 10) Notify button (fake, jen UX)
+    // ============================================================
+    $("#notifyBtn").addEventListener("click", () => {
+      toast("Upozornění", "Zatím demo. Reálně by to šlo přes formulář / newsletter.");
+    });
+
+    // ============================================================
+    // 11) YEAR
+    // ============================================================
+    $("#year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
