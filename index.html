@@ -7,313 +7,275 @@
 
 <style>
 
-/* =========================
-   DESIGN SYSTEM
-========================= */
-
+/* =========================================================
+   DESIGN TOKENS
+========================================================= */
 :root {
-    --bg-main: #0b0f1a;
-    --bg-section: #111827;
-    --bg-card: #1f2933;
+  --bg-900:#05070d;
+  --bg-800:#0b0f1a;
+  --bg-700:#121826;
+  --card:#161d2e;
 
-    --text-main: #f3f4f6;
-    --text-muted: #9ca3af;
+  --text-main:#f8fafc;
+  --text-muted:#9aa4b2;
 
-    --accent: #f59e0b;
-    --accent-hover: #fbbf24;
+  --accent:#fbbf24;
+  --accent-soft:rgba(251,191,36,.15);
 
-    --radius-sm: 10px;
-    --radius-md: 18px;
-    --radius-lg: 30px;
+  --radius-xs:6px;
+  --radius-sm:12px;
+  --radius-md:20px;
+  --radius-lg:32px;
 
-    --shadow-soft: 0 10px 40px rgba(0,0,0,0.35);
+  --shadow-lg:0 30px 80px rgba(0,0,0,.45);
+  --ease:cubic-bezier(.22,.61,.36,1);
 }
 
-/* =========================
+/* =========================================================
    RESET
-========================= */
+========================================================= */
+*{margin:0;padding:0;box-sizing:border-box}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-img {
-    max-width: 100%;
-    display: block;
-}
-
-/* =========================
+/* =========================================================
    BASE
-========================= */
-
-body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: var(--bg-main);
-    color: var(--text-main);
-    line-height: 1.7;
+========================================================= */
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,var(--bg-900),var(--bg-800));
+  color:var(--text-main);
+  line-height:1.7;
+  overflow-x:hidden;
 }
 
-/* =========================
+/* =========================================================
    NAVBAR
-========================= */
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(11,15,26,0.85);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+========================================================= */
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:1000;
+  background:rgba(5,7,13,.7);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-.navbar {
-    max-width: 1300px;
-    margin: auto;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.nav{
+  max-width:1400px;
+  margin:auto;
+  padding:22px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.logo img {
-    height: 48px;
+.nav img{height:46px}
+
+.nav-links a{
+  margin-left:32px;
+  color:var(--text-muted);
+  font-weight:500;
+  position:relative;
 }
 
-.nav-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    margin-left: 25px;
-    font-weight: 500;
-    transition: color .3s ease;
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;bottom:-6px;
+  width:0;height:2px;
+  background:var(--accent);
+  transition:.4s var(--ease);
 }
 
-.nav-links a:hover {
-    color: var(--accent);
-}
+.nav-links a:hover::after{width:100%}
 
-/* =========================
+/* =========================================================
    HERO
-========================= */
-
-.hero {
-    min-height: 85vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 20px;
+========================================================= */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:140px 30px 80px;
 }
 
-.hero-content {
-    max-width: 900px;
+.hero-inner{
+  max-width:1000px;
+  text-align:center;
 }
 
-.hero h1 {
-    font-size: clamp(36px, 6vw, 72px);
-    margin-bottom: 20px;
+.hero h1{
+  font-size:clamp(42px,7vw,84px);
+  margin-bottom:24px;
 }
 
-.hero p {
-    font-size: 22px;
-    color: var(--text-muted);
-    margin-bottom: 40px;
+.hero p{
+  font-size:22px;
+  color:var(--text-muted);
+  margin-bottom:48px;
 }
 
-/* =========================
+/* =========================================================
    BUTTONS
-========================= */
-
-.btn {
-    display: inline-block;
-    padding: 16px 36px;
-    border-radius: var(--radius-lg);
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all .3s ease;
+========================================================= */
+.btn{
+  display:inline-block;
+  padding:18px 42px;
+  border-radius:var(--radius-lg);
+  font-weight:600;
+  transition:.4s var(--ease);
 }
 
-.btn-primary {
-    background: var(--accent);
-    color: #111;
-    box-shadow: var(--shadow-soft);
+.btn-primary{
+  background:var(--accent);
+  color:#111;
+  box-shadow:var(--shadow-lg);
 }
 
-.btn-primary:hover {
-    background: var(--accent-hover);
-    transform: translateY(-3px);
+.btn-primary:hover{
+  transform:translateY(-4px);
 }
 
-.btn-outline {
-    border: 2px solid var(--accent);
-    color: var(--accent);
-    margin-left: 20px;
+.btn-secondary{
+  margin-left:20px;
+  border:2px solid var(--accent);
+  color:var(--accent);
 }
 
-.btn-outline:hover {
-    background: var(--accent);
-    color: #111;
-}
-
-/* =========================
+/* =========================================================
    SECTIONS
-========================= */
-
-.section {
-    padding: 100px 30px;
+========================================================= */
+.section{
+  padding:140px 40px;
 }
 
-.section-dark {
-    background: var(--bg-section);
+.container{
+  max-width:1400px;
+  margin:auto;
 }
 
-.container {
-    max-width: 1300px;
-    margin: auto;
+.section-title{
+  font-size:52px;
+  margin-bottom:20px;
 }
 
-/* =========================
-   TEXT BLOCKS
-========================= */
-
-.section-title {
-    font-size: 42px;
-    margin-bottom: 20px;
+.section-desc{
+  max-width:700px;
+  color:var(--text-muted);
+  margin-bottom:80px;
 }
 
-.section-subtitle {
-    color: var(--text-muted);
-    max-width: 700px;
-    margin-bottom: 60px;
-}
-
-/* =========================
+/* =========================================================
    FEATURES
-========================= */
-
-.features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+========================================================= */
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:40px;
 }
 
-.feature-card {
-    background: var(--bg-card);
-    padding: 35px;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
+.feature{
+  background:var(--card);
+  padding:40px;
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-lg);
+  transition:.6s var(--ease);
 }
 
-.feature-card h3 {
-    margin-bottom: 15px;
+.feature:hover{
+  transform:translateY(-10px);
 }
 
-.feature-card p {
-    color: var(--text-muted);
-}
-
-/* =========================
+/* =========================================================
    CATS GRID
-========================= */
-
-.cats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 35px;
+========================================================= */
+.cats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:50px;
 }
 
-.cat-card {
-    background: var(--bg-card);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-    transition: transform .3s ease;
+.cat{
+  position:relative;
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  background:var(--card);
+  box-shadow:var(--shadow-lg);
 }
 
-.cat-card:hover {
-    transform: translateY(-6px);
+.cat img{
+  height:360px;
+  width:100%;
+  object-fit:cover;
 }
 
-.cat-card img {
-    height: 300px;
-    object-fit: cover;
-    width: 100%;
+.cat::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.7),transparent);
+  opacity:0;
+  transition:.5s var(--ease);
 }
 
-.cat-card .info {
-    padding: 25px;
+.cat:hover::after{opacity:1}
+
+.cat-info{
+  position:absolute;
+  bottom:0;
+  padding:30px;
+  transform:translateY(30px);
+  opacity:0;
+  transition:.5s var(--ease);
 }
 
-.cat-card h3 {
-    margin-bottom: 10px;
+.cat:hover .cat-info{
+  transform:translateY(0);
+  opacity:1;
 }
 
-.cat-card a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-}
+.cat-info h3{margin-bottom:10px}
+.cat-info span{color:var(--accent);font-weight:600}
 
-/* =========================
+/* =========================================================
    CTA
-========================= */
-
-.cta {
-    text-align: center;
+========================================================= */
+.cta{
+  background:linear-gradient(135deg,var(--bg-700),var(--bg-800));
+  text-align:center;
+  border-radius:var(--radius-lg);
+  padding:120px 40px;
+  box-shadow:var(--shadow-lg);
 }
 
-.cta p {
-    color: var(--text-muted);
-    margin-bottom: 30px;
-}
-
-/* =========================
+/* =========================================================
    FOOTER
-========================= */
-
-footer {
-    background: #05080f;
-    padding: 60px 30px;
-    color: var(--text-muted);
+========================================================= */
+footer{
+  padding:100px 40px;
+  background:#02040a;
+  color:var(--text-muted);
 }
 
-.footer-grid {
-    max-width: 1300px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
+.footer-grid{
+  max-width:1400px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:60px;
 }
 
-footer a {
-    color: var(--text-muted);
-    text-decoration: none;
-}
-
-footer a:hover {
-    color: var(--accent);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 768px) {
-    .btn-outline {
-        margin-left: 0;
-        margin-top: 15px;
-        display: inline-block;
-    }
-}
+footer h4{margin-bottom:20px;color:var(--text-main)}
 
 </style>
 </head>
 
 <body>
 
-<!-- CHAT ZŮSTÁVÁ -->
+<!-- CHAT -->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -327,85 +289,80 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 
 <header>
-    <div class="navbar">
-        <div class="logo">
-            <a href="index.html">
-                <img src="kočka/logo.png" alt="Logo">
-            </a>
-        </div>
-        <nav class="nav-links">
-            <a href="#onas">O nás</a>
-            <a href="#kocky">Kočky</a>
-            <a href="kontakty.html">Kontakt</a>
-        </nav>
+  <div class="nav">
+    <img src="kočka/logo.png">
+    <div class="nav-links">
+      <a href="#onas">O nás</a>
+      <a href="#kocky">Kočky</a>
+      <a href="kontakty.html">Kontakt</a>
     </div>
+  </div>
 </header>
 
 <section class="hero">
-    <div class="hero-content">
-        <h1>Chovatelská stanice koček</h1>
-        <p>Zdravé, socializované a milované kočky zodpovědně chované v rodinném prostředí.</p>
-        <a href="#kocky" class="btn btn-primary">Prohlédnout kočky</a>
-        <a href="kontakty.html" class="btn btn-outline">Kontaktovat</a>
-    </div>
+  <div class="hero-inner">
+    <h1>Chovatelská stanice koček</h1>
+    <p>Zodpovědný chov. Zdravé kočky. Žádná továrna.</p>
+    <a class="btn btn-primary" href="#kocky">Zobrazit kočky</a>
+    <a class="btn btn-secondary" href="kontakty.html">Domluvit návštěvu</a>
+  </div>
 </section>
 
-<section id="onas" class="section section-dark">
-    <div class="container">
-        <h2 class="section-title">Proč právě my</h2>
-        <p class="section-subtitle">
-            Nejsme továrna na koťata. Jsme chov, který dává smysl.
-        </p>
+<section id="onas" class="section">
+  <div class="container">
+    <h2 class="section-title">Proč my</h2>
+    <p class="section-desc">
+      Kočky chováme doma, ne ve skladu. Zdraví a povaha nejsou bonus, ale základ.
+    </p>
 
-        <div class="features">
-            <div class="feature-card">
-                <h3>Zdravotní péče</h3>
-                <p>Očkování, odčervení a veterinární dohled je u nás samozřejmost.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Socializace</h3>
-                <p>Kočky vyrůstají v kontaktu s lidmi i dalšími zvířaty.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Transparentnost</h3>
-                <p>Víš, odkud kočka pochází, v jakém je stavu a jak žije.</p>
-            </div>
-        </div>
+    <div class="features">
+      <div class="feature">Veterinární péče bez kompromisů</div>
+      <div class="feature">Socializace od narození</div>
+      <div class="feature">Transparentní původ</div>
     </div>
+  </div>
 </section>
 
 <section id="kocky" class="section">
-    <div class="container">
-        <h2 class="section-title">Naše kočky</h2>
+  <div class="container">
+    <h2 class="section-title">Naše kočky</h2>
 
-        <div class="cats-grid">
-            <div class="cat-card"><img src="kočka/imgs/pepa.jpg"><div class="info"><h3>Pepa</h3><a href="pepa.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/líza.jpg"><div class="info"><h3>Líza</h3><a href="líza.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/robert.jpg"><div class="info"><h3>Robert</h3><a href="robert.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/1.jpg"><div class="info"><h3>Bubáček</h3><a href="bubacek.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/2.jpg"><div class="info"><h3>Loupežník</h3><a href="loupeznik.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/3.jpg"><div class="info"><h3>Loupák</h3><a href="loupak.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/4.jpg"><div class="info"><h3>Kuře</h3><a href="kure.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/5.jpg"><div class="info"><h3>Oskar</h3><a href="oskar.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/6.jpg"><div class="info"><h3>Bledulka</h3><a href="bledule.html">Detail</a></div></div>
-            <div class="cat-card"><img src="kočka/imgs/7.jpg"><div class="info"><h3>Mašlička</h3><a href="maslicka.html">Detail</a></div></div>
-        </div>
+    <div class="cats">
+      <a class="cat" href="pepa.html"><img src="kočka/imgs/pepa.jpg"><div class="cat-info"><h3>Pepa</h3><span>Detail</span></div></a>
+      <a class="cat" href="líza.html"><img src="kočka/imgs/líza.jpg"><div class="cat-info"><h3>Líza</h3><span>Detail</span></div></a>
+      <a class="cat" href="robert.html"><img src="kočka/imgs/robert.jpg"><div class="cat-info"><h3>Robert</h3><span>Detail</span></div></a>
+      <a class="cat" href="bubacek.html"><img src="kočka/imgs/1.jpg"><div class="cat-info"><h3>Bubáček</h3><span>Detail</span></div></a>
+      <a class="cat" href="loupeznik.html"><img src="kočka/imgs/2.jpg"><div class="cat-info"><h3>Loupežník</h3><span>Detail</span></div></a>
+      <a class="cat" href="loupak.html"><img src="kočka/imgs/3.jpg"><div class="cat-info"><h3>Loupák</h3><span>Detail</span></div></a>
+      <a class="cat" href="kure.html"><img src="kočka/imgs/4.jpg"><div class="cat-info"><h3>Kuře</h3><span>Detail</span></div></a>
+      <a class="cat" href="oskar.html"><img src="kočka/imgs/5.jpg"><div class="cat-info"><h3>Oskar</h3><span>Detail</span></div></a>
+      <a class="cat" href="bledule.html"><img src="kočka/imgs/6.jpg"><div class="cat-info"><h3>Bledulka</h3><span>Detail</span></div></a>
+      <a class="cat" href="maslicka.html"><img src="kočka/imgs/7.jpg"><div class="cat-info"><h3>Mašlička</h3><span>Detail</span></div></a>
     </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta">
+      <h2>Chceš kočku, ne problém</h2>
+      <p>Ozvi se. Řekneme si, jestli jsme pro sebe vhodní.</p>
+      <a class="btn btn-primary" href="kontakty.html">Kontaktovat</a>
+    </div>
+  </div>
 </section>
 
 <footer>
-    <div class="footer-grid">
-        <div>
-            <h3>Chovatelská stanice</h3>
-            <p>Rodinný chov koček s důrazem na zdraví a pohodu.</p>
-        </div>
-        <div>
-            <h3>Navigace</h3>
-            <p><a href="#onas">O nás</a></p>
-            <p><a href="#kocky">Kočky</a></p>
-            <p><a href="kontakty.html">Kontakt</a></p>
-        </div>
+  <div class="footer-grid">
+    <div>
+      <h4>Chovatelská stanice</h4>
+      <p>Rodinný chov koček s respektem.</p>
     </div>
+    <div>
+      <h4>Kontakt</h4>
+      <p><a href="kontakty.html">Kontaktní stránka</a></p>
+    </div>
+  </div>
 </footer>
 
 </body>
